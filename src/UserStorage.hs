@@ -3,19 +3,13 @@
 Storage module implementation.
 TODO: use something, taht get ability for abstract concrete type of storage
 -}
-module Storage (getUsers, getUser, storeUser) where
+module UserStorage where
 
 import qualified Data.ByteString as Str
 import qualified Data.ByteString.UTF8 as Utf8
+import Model
 import Data.Text (splitOn, intercalate, isInfixOf, pack, unpack)
 
-type Id = Int
-type Username = String
-
-data User = User { id       :: Id
-                 , username :: String
-                 , password :: String 
-} deriving (Show, Read)
 
 {-
    What i want?
@@ -25,6 +19,10 @@ data User = User { id       :: Id
 
 -- TODO: extract to evironment, configuration, etc
 dbFilepath = "db.txt"
+
+type GetUserF = Username -> IO (Maybe User)
+type GetUsersF = IO [User]
+
 
 -- | get all users in storage
 getUsers :: IO [User]
@@ -65,4 +63,4 @@ in other - io, random, state, etc.
 -} 
 createId :: [User] -> Id
 createId [] = 1
-createId xs = (succ . Storage.id . last) xs
+createId xs = (succ . Model.id . last) xs
