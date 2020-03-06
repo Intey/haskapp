@@ -36,7 +36,7 @@ getUser "" = pure Nothing
 getUser name = do
   users <- getUsers
   let matched = filter (\x -> (username x) == name) users in
-    if length matched == 0 
+    if null matched
       then pure Nothing
       else pure $ Just (head matched)
 
@@ -46,7 +46,7 @@ storeUser username pws = do
   users <- getUsers
   let newID = createId users in
     let usr = User newID username pws in
-      (Str.appendFile dbFilepath $ Utf8.fromString $ (show usr) ++ "\n") >> pure usr
+      Str.appendFile dbFilepath (Utf8.fromString $ (show usr) ++ "\n") >> pure usr
 
 {-|
 technical. 

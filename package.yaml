@@ -25,6 +25,9 @@ dependencies:
 - text
 - utf8-string
 - mtl
+- yesod
+- classy-prelude-yesod 
+- persistent-sqlite
 
 library:
   source-dirs: 
