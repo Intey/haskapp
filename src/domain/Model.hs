@@ -29,7 +29,7 @@ newtype Context = Context {
     }
 
 -- apped 
-markup :: User -> Object -> Entity -> position -> MarkedObject position -> MarkedObject position
+markup :: User -> Mark position -> MarkedObject position -> MarkedObject position
 markup u o e p (MarkedObject [] _) = MarkedObject [Mark p e u] o 
 markup u o e p (MarkedObject ms _) = MarkedObject ((Mark p e u):ms) o 
 
@@ -41,9 +41,12 @@ data Group = Group String [Permission] deriving (Show, Read)
 data Department = Department Id String
 
 
-data MarkedObjectP p = MarkedObjectP p Department
+data MarkedObjectP p = MarkedObjectP (MarkedObject p) Department
 data DUser = DUser User Department
 
-accessible (DUser u (Department i _)) (MarkedObjectP p (Department i' _)) = i == i'
-
-markupUseCase :: DUser -> MarkedObjectP p -> MarkedObjectP p
+accessible (DUser _ (Department i _)) (MarkedObjectP _ (Department i' _)) = i == i'
+type Error = String
+createMark :: DUser -> MarkedObjectP p -> Mark p -> Either Error (MarkedObject p)
+createMark duser@(DUser u _) mop@(MarkedObjectP mo _) mark = if accessible duser mop 
+    then Right (markup u mark mo)
+    else Left "no access"
