@@ -22,7 +22,7 @@ newtype Position a = Position a
 
 data Mark position = Mark position Entity User
 
-data MarkedObject position = MarkedObject [Mark position] Object
+data MarkedObject position = MarkedObject [(Mark position)] Object
 
 newtype Context = Context {
     user :: User 
@@ -30,8 +30,8 @@ newtype Context = Context {
 
 -- apped 
 markup :: User -> Mark position -> MarkedObject position -> MarkedObject position
-markup u o e p (MarkedObject [] _) = MarkedObject [Mark p e u] o 
-markup u o e p (MarkedObject ms _) = MarkedObject ((Mark p e u):ms) o 
+markup u mark (MarkedObject [] o) = MarkedObject [mark] o
+markup u mark (MarkedObject ms o) = MarkedObject (mark:ms) o 
 
 
 -- permission models by departments
