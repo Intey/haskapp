@@ -1,5 +1,5 @@
 {
     "todo-tree.general.statusBar": "tags",
-    "todo-tree.regex.regex": "((//|#|<!--|--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])",
-    "ghcSimple.feature.rangeType": false
+    "ghcSimple.feature.rangeType": false,
+    "todo-tree.regex.regex": "((//|#|<!--|^--|;|/\\*|^)\\s*($TAGS)|^\\s*- \\[ \\])"
 }

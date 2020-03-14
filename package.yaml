@@ -28,10 +28,14 @@ dependencies:
 - yesod
 - classy-prelude-yesod 
 - persistent-sqlite
+- containers 
+- tasty
+- hspec
+- transformers
 
 library:
   source-dirs: 
-    - src
+    - src/
 executables:
   hask-marker-exe:
     main:                Main.hs

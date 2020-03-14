@@ -1,18 +1,16 @@
-module Model where
-
+module Domain.Model where
 
 type Id = Int
 type Username = String
+type Error = String
 
-
-data User = User { id       :: Id
-                 , username :: String
-                 , password :: String 
+data User = User { userId   :: Id
+                 , userName :: String
 } deriving (Show, Read)
 
-type Bytes = String
-
-data Object = Doc | Dialog
+data Object = Doc       {objName :: String }
+            | Dialog    {objName :: String }
+    deriving (Show, Eq)
 
 newtype Attribute = Attribute String 
 
@@ -24,15 +22,11 @@ data Mark position = Mark position Entity User
 
 data MarkedObject position = MarkedObject [(Mark position)] Object
 
-newtype Context = Context {
-    user :: User 
-    }
-
--- apped 
-markup :: User -> Mark position -> MarkedObject position -> MarkedObject position
-markup u mark (MarkedObject [] o) = MarkedObject [mark] o
-markup u mark (MarkedObject ms o) = MarkedObject (mark:ms) o 
-
+data Task = Task {
+      taskName :: String
+    , taskInstruction :: String
+    -- , taskObjects :: [Object]   
+} deriving (Show, Eq)
 
 -- permission models by departments
 
@@ -45,7 +39,14 @@ data MarkedObjectP p = MarkedObjectP (MarkedObject p) Department
 data DUser = DUser User Department
 
 accessible (DUser _ (Department i _)) (MarkedObjectP _ (Department i' _)) = i == i'
-type Error = String
+
+
+-- apped 
+markup :: User -> Mark position -> MarkedObject position -> MarkedObject position
+markup u mark (MarkedObject [] o) = MarkedObject [mark] o
+markup u mark (MarkedObject ms o) = MarkedObject (mark:ms) o 
+
+
 createMark :: DUser -> MarkedObjectP p -> Mark p -> Either Error (MarkedObject p)
 createMark duser@(DUser u _) mop@(MarkedObjectP mo _) mark = if accessible duser mop 
     then Right (markup u mark mo)

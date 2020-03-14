@@ -1,2 +1,5 @@
-main :: IO ()
-main = putStrLn "Test suite not yet implemented"
+import qualified MemorySpec 
+
+import Test.Hspec
+
+main = MemorySpec.spec
