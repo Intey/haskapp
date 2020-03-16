@@ -38,13 +38,14 @@ data Department = Department Id String
 data MarkedObjectP p = MarkedObjectP (MarkedObject p) Department
 data DUser = DUser User Department
 
+accessible :: DUser -> MarkedObjectP p -> Bool
 accessible (DUser _ (Department i _)) (MarkedObjectP _ (Department i' _)) = i == i'
 
 
 -- apped 
 markup :: User -> Mark position -> MarkedObject position -> MarkedObject position
-markup u mark (MarkedObject [] o) = MarkedObject [mark] o
-markup u mark (MarkedObject ms o) = MarkedObject (mark:ms) o 
+markup _ mark (MarkedObject [] o) = MarkedObject [mark] o
+markup _ mark (MarkedObject ms o) = MarkedObject (mark:ms) o 
 
 
 createMark :: DUser -> MarkedObjectP p -> Mark p -> Either Error (MarkedObject p)

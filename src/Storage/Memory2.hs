@@ -28,6 +28,7 @@ storeItems = reverse . items
 type MemoryObjectsStorage = MemoryStorage Object
 type MemoryTasksStorage = MemoryStorage Task
 
+store :: [StoreItem i] -> MemoryStorage i
 store = MemoryStorage
 
 -- TODO: multiparams typeclasses or type families for reduce duplications and different names of functions
@@ -53,6 +54,6 @@ instance TaskStorage MemoryTasksStorage where
 
 memGetById :: [StoreItem o] -> Id -> Maybe o
 memGetById [] _ = Nothing
-memGetById (o:objs) id = if (fst o) == id
+memGetById (o:objs) i = if (fst o) == i
                         then Just . snd $ o
-                        else memGetById objs id
+                        else memGetById objs i  
